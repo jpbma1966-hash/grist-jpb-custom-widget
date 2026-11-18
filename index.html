@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Convertisseur Markdown vers Word</title>
+  <style>
+    :root {
+      font-family: Arial, Helvetica, sans-serif;
+      color: #1e293b;
+      background: #f8fafc;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 24px; }
+    .container {
+      max-width: 760px; margin: 24px auto; padding: 28px;
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, .06);
+    }
+    h1 { margin: 0 0 8px; font-size: 1.45rem; color: #1e293b; }
+    .intro { margin: 0 0 24px; color: #64748b; line-height: 1.5; }
+    .dropzone {
+      border: 2px dashed #cbd5e1; border-radius: 12px; padding: 28px 18px;
+      text-align: center; background: #f8fafc;
+    }
+    .dropzone.dragover { border-color: #2563eb; background: #eff6ff; }
+    .file-icon { font-size: 2rem; margin-bottom: 8px; }
+    .file-name { margin-top: 12px; color: #334155; overflow-wrap: anywhere; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    button, .file-button {
+      display: inline-block; border: 0; border-radius: 8px; padding: 11px 18px;
+      font-size: .95rem; font-weight: 600; cursor: pointer;
+    }
+    .file-button, #convertButton { color: #fff; background: #2563eb; }
+    #convertButton:disabled { background: #94a3b8; cursor: not-allowed; }
+    #resetButton { color: #334155; background: #e2e8f0; }
+    input[type=file] { display: none; }
+    #status { margin: 18px 0 0; min-height: 24px; color: #475569; line-height: 1.45; }
+    #status.error { color: #b91c1c; }
+    #status.success { color: #047857; }
+    .privacy { margin-top: 22px; padding-top: 16px; border-top: 1px solid #e2e8f0;
+      color: #64748b; font-size: .82rem; line-height: 1.45; }
+    @media (max-width: 520px) {
+      body { padding: 10px; }
+      .container { margin: 8px auto; padding: 20px; }
+      .actions > * { width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Convertisseur Markdown vers Word</h1>
+    <p class="intro">
+      Sélectionnez un fichier Markdown (.md) pour le convertir en document Word (.docx).
+      Les diagrammes Mermaid sont intégrés au document.
+    </p>
+
+    <section id="dropzone" class="dropzone" aria-label="Zone de sélection du fichier">
+      <div class="file-icon" aria-hidden="true">📄</div>
+      <p>Déposez votre fichier Markdown ici</p>
+      <p>ou</p>
+      <label class="file-button" for="fileInput">Choisir un fichier .md</label>
+      <input id="fileInput" type="file" accept=".md,.markdown,text/markdown,text/plain">
+      <div id="fileName" class="file-name">Aucun fichier sélectionné</div>
+    </section>
+
+    <div class="actions">
+      <button id="convertButton" type="button" disabled>Convertir et télécharger le Word</button>
+      <button id="resetButton" type="button">Réinitialiser</button>
+    </div>
+
+    <p id="status" role="status" aria-live="polite"></p>
+    <p class="privacy">
+      Traitement local : le contenu du fichier est converti dans votre navigateur.
+      Aucun envoi vers un serveur externe n'est effectué par ce widget.
+    </p>
+  </main>
+
+  <!-- widget.js est le bundle local généré par la compilation npm -->
+  <script type="module" src="./widget.js"></script>
+</body>
+</html>
