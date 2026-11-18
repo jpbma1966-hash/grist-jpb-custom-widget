@@ -1,1 +1,47 @@
 
+name: Build Grist Widgets
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'markdown-to-docx/**'
+      - '.github/workflows/build-widget.yml'
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        working-directory: markdown-to-docx
+        run: npm install --no-audit --no-fund
+
+      - name: Build widget
+        working-directory: markdown-to-docx
+        run: npm run build
+
+      - name: Publish generated bundle
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add markdown-to-docx/widget.js
+          if ! git diff --cached --quiet; then
+            git commit -m "Build Markdown to DOCX widget"
+            git push
+          fi
+
