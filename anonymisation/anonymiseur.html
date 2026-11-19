@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anonymiseur de fichiers</title>
+<style>
+  :root { --bg:#fff; --fg:#1f2430; --mut:#667085; --line:#d0d5dd; --acc:#16875d; --err:#b42318; --box:#f6f7f9; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#1b1e26; --fg:#e8eaee; --mut:#9aa3b2; --line:#3a4050; --acc:#3fbf8c; --err:#f97066; --box:#242833; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; padding:14px; background:var(--bg); color:var(--fg);
+         font:14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  h1 { font-size:16px; margin:0 0 10px; }
+  .row { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:10px; }
+  fieldset { border:1px solid var(--line); border-radius:6px; padding:6px 10px; margin:0; }
+  legend { color:var(--mut); font-size:12px; padding:0 4px; }
+  label { margin-right:12px; cursor:pointer; }
+  button, input[type=file]::file-selector-button {
+    font:inherit; padding:6px 12px; border:1px solid var(--line); border-radius:6px;
+    background:var(--box); color:var(--fg); cursor:pointer; }
+  button.main { background:var(--acc); border-color:var(--acc); color:#fff; }
+  button:disabled { opacity:.5; cursor:default; }
+  button:focus-visible, input:focus-visible { outline:2px solid var(--acc); outline-offset:2px; }
+  #log { background:var(--box); border:1px solid var(--line); border-radius:6px; padding:8px 10px;
+         min-height:90px; max-height:260px; overflow:auto; font:12px/1.5 ui-monospace, Consolas, monospace;
+         white-space:pre-wrap; }
+  .err { color:var(--err); } .ok { color:var(--acc); }
+  #dl a { display:inline-block; margin-top:10px; padding:6px 12px; border-radius:6px;
+          background:var(--acc); color:#fff; text-decoration:none; }
+  small { color:var(--mut); }
+</style>
+</head>
+<body>
+  <h1>Anonymiser / désanonymiser un fichier</h1>
+
+  <div class="row">
+    <input type="file" id="file" accept=".docx,.md,.markdown,.html,.htm,.js,.txt">
+  </div>
+
+  <div class="row">
+    <fieldset>
+      <legend>Sens</legend>
+      <label><input type="radio" name="mode" value="anon" checked> Anonymiser</label>
+      <label><input type="radio" name="mode" value="deanon"> Désanonymiser</label>
+    </fieldset>
+    <fieldset>
+      <legend>Dossier / jeu de correspondances</legend>
+      <input type="text" id="dossier" placeholder="(facultatif)" size="18">
+    </fieldset>
+  </div>
+
+  <div class="row">
+    <button id="run" class="main" disabled>Traiter le fichier</button>
+    <button id="reload">Recharger les tables</button>
+  </div>
+
+  <div id="log" aria-live="polite">Initialisation…</div>
+  <div id="dl"></div>
+  <p><small>Tables utilisées : Anon_Mapping, Anon_Regles, Anon_Journal (créées au besoin).
+  Ajoute des termes dans Anon_Mapping (type + valeur_reelle) : le pseudo est généré automatiquement.</small></p>
+
+  <script src="https://docs.getgrist.com/grist-plugin-api.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="anonymiseur.js"></script>
+</body>
+</html>
